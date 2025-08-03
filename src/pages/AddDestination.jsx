@@ -45,7 +45,7 @@ function AddDestination() {
       icon: "success",
       confirmButtonText: "Back to Home",
     }).then(() => {
-      navigate("/");
+      navigate("/destination");
     });
 
     // Clear form

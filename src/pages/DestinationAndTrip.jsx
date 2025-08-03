@@ -16,7 +16,7 @@ function DestinationAndTrip() {
   return (
     <div>
       <Grid container spacing={2} sx={{ mt: 5 }}>
-        <Grid size={{ sm: 6 }}>
+        <Grid size={{ lg: 6 }}>
           <Card sx={{ backgroundColor: "#545454" }}>
             <CardMedia
               sx={{ height: 140, backgroundColor: "white" }}

@@ -39,7 +39,7 @@ function ResponsiveAppBar() {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "white",
+        backgroundColor: "#F8F9FA",
         color: "black",
       }}
     >
@@ -75,7 +75,6 @@ function ResponsiveAppBar() {
               Weekend Trip Planner
             </Typography>
           </Box>
-          
 
           {/* HAMBURGER MENU - Mobile Only */}
           <Box sx={{ display: { xs: "flex", md: "none" } }}>

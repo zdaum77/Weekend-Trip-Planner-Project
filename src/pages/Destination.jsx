@@ -18,6 +18,8 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -59,19 +61,45 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Destination() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState(() => {
     const stored = localStorage.getItem("posts");
     return stored ? JSON.parse(stored) : [];
   });
 
   // Track completion per post ID
-  const [completedStatus, setCompletedStatus] = useState({});
+  const [completedStatus, setCompletedStatus] = useState(() => {
+    const stored = localStorage.getItem("completedStatus");
+    return stored ? JSON.parse(stored) : {};
+  });
 
   const toggleCompletion = (id) => {
-    setCompletedStatus((prevStatus) => ({
-      ...prevStatus,
-      [id]: !prevStatus[id],
-    }));
+    setCompletedStatus((prev) => {
+      const safePrev = prev || {};
+      const next = { ...safePrev, [id]: !safePrev[id] };
+      localStorage.setItem("completedStatus", JSON.stringify(next));
+      return next; // <--- this was missing
+    });
+  };
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This trip will be removed permanently.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedPosts = posts.filter((post) => post.id !== id);
+        setPosts(updatedPosts);
+        localStorage.setItem("posts", JSON.stringify(updatedPosts));
+
+        Swal.fire("Deleted!", "Your trip has been deleted.", "success");
+      }
+    });
   };
 
   return (
@@ -104,7 +132,7 @@ function Destination() {
         <Grid container spacing={2} sx={{ mt: 5 }}>
           {posts.map((post) => (
             <Grid item key={post.id} xs={12} sm={6} md={4}>
-              <Card sx={{ backgroundColor: "#545454" }}>
+              <Card sx={{ backgroundColor: "#F1F3F5" }}>
                 <CardMedia
                   sx={{ height: 200, width: 360, backgroundColor: "white" }}
                   image={
@@ -142,12 +170,88 @@ function Destination() {
                     Distance: {post.distance}
                   </Typography>
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    Cost: RM {post.cost}
+                    Cost: RM{post.cost}
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Memory</Button>
-                  <Button size="small">View</Button>
+                  <Button
+                    size="small"
+                    sx={{
+                      backgroundColor: "#0077B6",
+                      color: "white",
+                      borderRadius: "20px",
+                      paddingX: 2,
+                      paddingY: 0.5,
+                      textTransform: "none",
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      "&:hover": {
+                        backgroundColor: "#005f87",
+                      },
+                    }}
+                  >
+                    Memory
+                  </Button>
+
+                  <Button
+                    size="small"
+                    sx={{
+                      backgroundColor: "#90E0EF",
+                      color: "#003049",
+                      borderRadius: "20px",
+                      paddingX: 2,
+                      paddingY: 0.5,
+                      textTransform: "none",
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      "&:hover": {
+                        backgroundColor: "#48CAE4",
+                      },
+                    }}
+                    onClick={() => navigate(`/TripView/${post.id}`)}
+                  >
+                    View
+                  </Button>
+                  <Button
+                    size="small"
+                    onClick={() => handleDelete(post.id)}
+                    sx={{
+                      textTransform: "none",
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      "&:hover": {
+                        backgroundColor: "#rgba(156, 57, 57, 1)",
+                      },
+                      borderRadius: "20px",
+                      paddingX: 2,
+                      paddingY: 0.5,
+                      textTransform: "none",
+                      fontWeight: 600,
+                      color: "white",
+                      backgroundColor: "rgba(200, 96, 96, 1)",
+                    }}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    size="small"
+                    sx={{
+                      backgroundColor: "#FFE066",
+                      color: "#333",
+                      borderRadius: "20px",
+                      paddingX: 2,
+                      paddingY: 0.5,
+                      textTransform: "none",
+                      fontWeight: 600,
+                      fontSize: "0.875rem",
+                      "&:hover": {
+                        backgroundColor: "#FFD43B",
+                      },
+                    }}
+                    onClick={() => navigate(`/edit/${post.id}`)}
+                  >
+                    Edit
+                  </Button>
                 </CardActions>
               </Card>
             </Grid>
