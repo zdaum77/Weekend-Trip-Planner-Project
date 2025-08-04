@@ -10,6 +10,8 @@ import DestinationAndTrip from "./pages/DestinationAndTrip";
 import Memory from "./pages/Memory";
 import ViewPage from "./pages/ViewPage";
 import EditTrip from "./pages/EditTrip";
+import EditMemory from "./pages/EditMemory";
+import EditDestination from "./pages/EditDestination";
 // import EditDestination from "./pages/EditDestinationPage";
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
         <Route path="/memory" element={<Memory />} />
         <Route path="/TripView/:id" element={<ViewPage />} />
         <Route path="/editTrip" element={<EditTrip />} />
+        <Route path="/editMemory" element={<EditMemory />} />
+        <Route path="/editDestination" element={<EditDestination />} />
         {/* <Route path="/edit/:id" element={<EditDestination />} /> */}
       </Routes>
       <Toaster position="top-right" theme="dark" />
