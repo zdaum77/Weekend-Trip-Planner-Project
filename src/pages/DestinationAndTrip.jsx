@@ -16,12 +16,18 @@ function DestinationAndTrip() {
   return (
     <div>
       <Grid container spacing={2} sx={{ mt: 5 }}>
-        <Grid size={{ lg: 6 }}>
-          <Card sx={{ backgroundColor: "#545454" }}>
+        <Grid size={{ sm: 12, md: 6 }}>
+          <Card
+            sx={{
+              backgroundColor: "#545454",
+              minWidth: 350,
+              minHeight: 500,
+            }}
+          >
             <CardMedia
-              sx={{ height: 140, backgroundColor: "white" }}
+              sx={{ height: 200, backgroundColor: "white" }}
               image="/static/images/cards/contemplative-reptile.jpg"
-              title="this is coffee"
+              title="Nice Trip"
             />
             <CardContent>
               <Typography gutterBottom variant="h5">
@@ -43,7 +49,7 @@ function DestinationAndTrip() {
             </CardActions>
           </Card>
         </Grid>
-        <Grid size={{ lg: 6 }}>
+        <Grid size={{ sm: 12, md: 6 }}>
           <div>
             <Typography variant="h6 ">Trip Planner</Typography>
 

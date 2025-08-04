@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link as RouterLink } from "react-router";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
   Container,
@@ -11,15 +11,15 @@ import {
   CardContent,
   CardMedia,
   InputBase,
+  IconButton,
 } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -62,23 +62,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function Destination() {
   const navigate = useNavigate();
+
   const [posts, setPosts] = useState(() => {
     const stored = localStorage.getItem("posts");
     return stored ? JSON.parse(stored) : [];
   });
-
-  // Track completion per post ID
   const [completedStatus, setCompletedStatus] = useState(() => {
     const stored = localStorage.getItem("completedStatus");
     return stored ? JSON.parse(stored) : {};
   });
+  const [search, setSearch] = useState("");
 
   const toggleCompletion = (id) => {
     setCompletedStatus((prev) => {
       const safePrev = prev || {};
       const next = { ...safePrev, [id]: !safePrev[id] };
       localStorage.setItem("completedStatus", JSON.stringify(next));
-      return next; // <--- this was missing
+      return next;
     });
   };
 
@@ -102,6 +102,13 @@ function Destination() {
     });
   };
 
+
+  const filtered = search.trim()
+    ? posts.filter((p) =>
+        (p.destination || "").toLowerCase().includes(search.toLowerCase())
+      )
+    : posts;
+
   return (
     <div>
       <Container sx={{ py: 10 }}>
@@ -114,23 +121,66 @@ function Destination() {
                   alignContent: "center",
                   border: "2px solid black",
                   borderRadius: "15px",
+                  maxWidth: 400,
                 }}
               >
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
                 <StyledInputBase
-                  placeholder="Search…"
+                  placeholder="Uncover Places.."
                   inputProps={{ "aria-label": "search" }}
                   fullWidth
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  sx={{ pl: 1 }}
                 />
+                {search && (
+                  <IconButton
+                    size="small"
+                    onClick={() => setSearch("")}
+                    sx={{
+                      position: "absolute",
+                      right: 4,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                    }}
+                    aria-label="clear search"
+                  >
+                    ×
+                  </IconButton>
+                )}
               </Search>
             </Box>
           </Grid>
         </Grid>
 
         <Grid container spacing={2} sx={{ mt: 5 }}>
-          {posts.map((post) => (
+          {filtered.length === 0 && (
+            <Box textAlign="center" mt={5} width="100%">
+              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
+                No matching destinations.
+              </Typography>
+              <Button
+                variant="contained"
+                sx={{
+                  borderRadius: "20px",
+                  backgroundColor: "#00b4d8",
+                  color: "#fff",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  "&:hover": {
+                    backgroundColor: "#0096c7",
+                  },
+                }}
+                onClick={() => navigate("/add")}
+              >
+                Create a Destination
+              </Button>
+            </Box>
+          )}
+
+          {filtered.map((post) => (
             <Grid item key={post.id} xs={12} sm={6} md={4}>
               <Card sx={{ backgroundColor: "#F1F3F5" }}>
                 <CardMedia
@@ -163,15 +213,13 @@ function Destination() {
                     {completedStatus[post.id] ? "Completed" : "Not Completed"}
                   </Button>
 
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  <Typography variant="body2">
                     Travel: {post.destination}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  <Typography variant="body2">
                     Distance: {post.distance}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    Cost: RM{post.cost}
-                  </Typography>
+                  <Typography variant="body2">Cost: RM {post.cost}</Typography>
                 </CardContent>
                 <CardActions>
                   <Button
@@ -189,6 +237,7 @@ function Destination() {
                         backgroundColor: "#005f87",
                       },
                     }}
+                    onClick={() => navigate(`/memory/`)}
                   >
                     Memory
                   </Button>
@@ -208,7 +257,7 @@ function Destination() {
                         backgroundColor: "#48CAE4",
                       },
                     }}
-                    onClick={() => navigate(`/TripView/${post.id}`)}
+                    onClick={() => navigate(`/tripView/${post.id}`)}
                   >
                     View
                   </Button>
@@ -220,15 +269,13 @@ function Destination() {
                       fontWeight: 600,
                       fontSize: "0.875rem",
                       "&:hover": {
-                        backgroundColor: "#rgba(156, 57, 57, 1)",
+                        backgroundColor: "#rgba(143, 58, 58, 1)",
                       },
                       borderRadius: "20px",
                       paddingX: 2,
                       paddingY: 0.5,
-                      textTransform: "none",
-                      fontWeight: 600,
                       color: "white",
-                      backgroundColor: "rgba(200, 96, 96, 1)",
+                      backgroundColor: "rgba(221, 15, 15, 1)",
                     }}
                   >
                     Delete
@@ -248,7 +295,7 @@ function Destination() {
                         backgroundColor: "#FFD43B",
                       },
                     }}
-                    onClick={() => navigate(`/edit/${post.id}`)}
+                    onClick={() => navigate(`/editDestination/${post.id}`)}
                   >
                     Edit
                   </Button>

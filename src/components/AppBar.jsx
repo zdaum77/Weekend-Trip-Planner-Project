@@ -47,8 +47,14 @@ function ResponsiveAppBar() {
         maxWidth="xl"
         sx={{ display: "flex", justifyContent: "space-between" }}
       >
-        <Toolbar disableGutters>
-          {/* LEFT SIDE - Logo and Title */}
+        <Toolbar
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+
           <Box
             sx={{
               flexGrow: 1,
@@ -76,7 +82,6 @@ function ResponsiveAppBar() {
             </Typography>
           </Box>
 
-          {/* HAMBURGER MENU - Mobile Only */}
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -124,7 +129,6 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
 
-          {/* MOBILE TITLE - Centered only on XS */}
           <Box sx={{ display: { xs: "flex", md: "none" }, flexGrow: 1 }}>
             <LuggageIcon sx={{ mr: 1 }} />
             <Typography
@@ -146,7 +150,6 @@ function ResponsiveAppBar() {
             </Typography>
           </Box>
 
-          {/* RIGHT SIDE - Nav Buttons */}
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
             {pages.map((page) => (
               <Button

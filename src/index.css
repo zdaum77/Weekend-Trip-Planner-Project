@@ -1,3 +1,39 @@
+
 body {
   margin: 0px;
+}
+
+@keyframes fly {
+  0% {
+    transform: translateX(-1200px);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+.text {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  font-size: 2rem;
+  animation: fly 8s linear infinite;
+}
+
+@keyframes fly-fast {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+.prank-text {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  font-size: 2rem;
+  animation: fly-fast 3.2s linear infinite;
+  
 }

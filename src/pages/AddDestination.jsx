@@ -15,15 +15,33 @@ function AddDestination() {
   const [cost, setCost] = useState("");
   const [image, setImage] = useState(null);
 
+  //set a max file size
+  const MAX_FILE_SIZE = 2 * 1024 * 1024;
+
+  
+  const safeSetItem = (key, value) => {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "QuotaExceededError") {
+        Swal.fire(
+          "Storage Full",
+          "Unable to save because localStorage quota was exceeded. Try removing old trips or using a smaller image.",
+          "error"
+        );
+      } else {
+        Swal.fire("Error", "Failed to save to storage.", "error");
+      }
+      return false;
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!destination || !distance || !cost || !image) {
-      Swal.fire(
-        "Error",
-        "Please fill in all fields and upload an image.",
-        "error"
-      );
+      Swal.fire("Error", "Please fill in all fields and upload an image.", "error");
       return;
     }
 
@@ -37,7 +55,9 @@ function AddDestination() {
 
     const existingPosts = JSON.parse(localStorage.getItem("posts")) || [];
     const updatedPosts = [...existingPosts, newPost];
-    localStorage.setItem("posts", JSON.stringify(updatedPosts));
+    const serialized = JSON.stringify(updatedPosts);
+    const ok = safeSetItem("posts", serialized);
+    if (!ok) return;
 
     Swal.fire({
       title: "Success!",
@@ -48,7 +68,7 @@ function AddDestination() {
       navigate("/destination");
     });
 
-    // Clear form
+
     setDestination("");
     setDistance("");
     setCost("");
@@ -96,11 +116,13 @@ function AddDestination() {
 
           <Box
             sx={{
-              backgroundColor: "green",
-              display: "flex",
-              justifyContent: "center",
-              mb: 3,
-              py: 2,
+              flex: 1,
+              p: 2,
+              border: "1px solid",
+              borderColor: "grey.400",
+              borderRadius: 2,
+              position: "relative",
+              mb: 2,
             }}
           >
             <Form.Group controlId="formFileLg" className="mb-3">
@@ -110,6 +132,14 @@ function AddDestination() {
                 onChange={(e) => {
                   const file = e.target.files[0];
                   if (file) {
+                    if (file.size > MAX_FILE_SIZE) {
+                      Swal.fire(
+                        "File too large",
+                        "Image exceeds 2MB. Please choose a smaller file.",
+                        "error"
+                      );
+                      return;
+                    }
                     const reader = new FileReader();
                     reader.onloadend = () => {
                       setImage(reader.result);
