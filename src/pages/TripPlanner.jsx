@@ -10,21 +10,10 @@ import {
   Divider,
 } from "@mui/material";
 
-function TripPlanner({ tripId: propTripId }) {
+function TripPlanner() {
   const navigate = useNavigate();
 
-  // resolve ID: prop -> query string -> last path segment
-  const getId = () => {
-    if (propTripId) return propTripId;
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get("id");
-    if (q) return q;
-    const parts = window.location.pathname.split("/").filter(Boolean);
-    return parts[parts.length - 1] || "default";
-  };
-  const id = getId();
-
-  const storageKey = `trip_notes_${id}`;
+  const storageKey = `trip_notes_default`;
 
   // load existing or default
   const parseStored = () => {
@@ -84,39 +73,37 @@ function TripPlanner({ tripId: propTripId }) {
         }}
       >
         <Stack spacing={2}>
-                                                <Divider />
+          <Divider />
 
-          <Stack spacing={2}>
-            <TextField
-              fullWidth
-              label="Activities"
-              variant="outlined"
-              value={notes.activities}
-              onChange={(e) => updateField("activities", e.target.value)}
-              multiline
-              placeholder="What do you plan to do?"
-            />
+          <TextField
+            fullWidth
+            label="Activities"
+            variant="outlined"
+            value={notes.activities}
+            onChange={(e) => updateField("activities", e.target.value)}
+            multiline
+            placeholder="What do you plan to do?"
+          />
 
-            <TextField
-              fullWidth
-              label="Budget"
-              variant="outlined"
-              value={notes.budget}
-              onChange={(e) => updateField("budget", e.target.value)}
-              placeholder="Estimated spending"
-            />
+          <TextField
+            fullWidth
+            label="Budget"
+            variant="outlined"
+            value={notes.budget}
+            onChange={(e) => updateField("budget", e.target.value)}
+            placeholder="Estimated spending"
+          />
 
-            <TextField
-              fullWidth
-              label="Packing List"
-              variant="outlined"
-              value={notes.packingList}
-              onChange={(e) => updateField("packingList", e.target.value)}
-              multiline
-              minRows={4}
-              placeholder="Things to bring"
-            />
-          </Stack>
+          <TextField
+            fullWidth
+            label="Packing List"
+            variant="outlined"
+            value={notes.packingList}
+            onChange={(e) => updateField("packingList", e.target.value)}
+            multiline
+            minRows={4}
+            placeholder="Things to bring"
+          />
 
           <Box
             sx={{
@@ -129,7 +116,7 @@ function TripPlanner({ tripId: propTripId }) {
           >
             <Button
               variant="contained"
-              onClick={() => navigate(`/TripView/${id}`)}
+              onClick={() => navigate(-1)}
               sx={{ textTransform: "none" }}
             >
               Done
