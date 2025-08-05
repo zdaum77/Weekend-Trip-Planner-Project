@@ -205,7 +205,6 @@ function ViewPage({ tripId: propTripId }) {
         </CardContent>
       </Card>
 
-
       <Box sx={{ flex: 1, minWidth: 300 }}>
         <Box
           sx={{
@@ -231,6 +230,13 @@ function ViewPage({ tripId: propTripId }) {
             onClick={handleAddTask}
           >
             add a task
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/destination")}
+            sx={{ borderRadius: 2, textTransform: "none" }}
+          >
+            Back
           </Button>
         </Box>
 
