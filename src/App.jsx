@@ -6,7 +6,7 @@ import { Toaster } from "sonner";
 import Home from "./pages/Home";
 import AddDestination from "./pages/AddDestination";
 import Destination from "./pages/Destination";
-import DestinationAndTrip from "./pages/DestinationAndTrip";
+
 import Memory from "./pages/Memory";
 import ViewPage from "./pages/ViewPage";
 import TripPlanner from "./pages/TripPlanner";
@@ -20,7 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/add" element={<AddDestination />} />
         <Route path="/destination" element={<Destination />} />
-        <Route path="/yourdestination" element={<DestinationAndTrip />} />
+
         <Route path="/memory" element={<Memory />} />
         <Route path="/TripView/:id" element={<ViewPage />} />
         <Route path="/TripPlanner/:id" element={<TripPlanner />} />

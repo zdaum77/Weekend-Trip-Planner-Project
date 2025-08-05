@@ -214,7 +214,7 @@ function Destination() {
                   </Button>
 
                   <Typography variant="body2">
-                    Travel: {post.destination}
+                    <b>Travel: {post.destination}</b>
                   </Typography>
                   <Typography variant="body2">
                     Distance: {post.distance}
