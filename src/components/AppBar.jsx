@@ -14,6 +14,10 @@ import LuggageIcon from "@mui/icons-material/Luggage";
 
 const pages = [
   {
+    label: "Memories",
+    url: "/memory/",
+  },
+  {
     label: "Destination List",
     url: "/destination",
   },
@@ -54,7 +58,6 @@ function ResponsiveAppBar() {
             justifyContent: "space-between",
           }}
         >
-
           <Box
             sx={{
               flexGrow: 1,

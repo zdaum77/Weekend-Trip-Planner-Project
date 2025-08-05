@@ -20,7 +20,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -101,7 +100,6 @@ function Destination() {
       }
     });
   };
-
 
   const filtered = search.trim()
     ? posts.filter((p) =>
@@ -222,26 +220,6 @@ function Destination() {
                   <Typography variant="body2">Cost: RM {post.cost}</Typography>
                 </CardContent>
                 <CardActions>
-                  <Button
-                    size="small"
-                    sx={{
-                      backgroundColor: "#0077B6",
-                      color: "white",
-                      borderRadius: "20px",
-                      paddingX: 2,
-                      paddingY: 0.5,
-                      textTransform: "none",
-                      fontWeight: 600,
-                      fontSize: "0.875rem",
-                      "&:hover": {
-                        backgroundColor: "#005f87",
-                      },
-                    }}
-                    onClick={() => navigate(`/memory/`)}
-                  >
-                    Memory
-                  </Button>
-
                   <Button
                     size="small"
                     sx={{
