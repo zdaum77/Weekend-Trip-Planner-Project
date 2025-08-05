@@ -19,7 +19,7 @@ function TripPlanner({ tripId: propTripId }) {
     const params = new URLSearchParams(window.location.search);
     const q = params.get("id");
     if (q) return q;
-    const parts = window.locaation.pathname.split("/").filter(Boolean);
+    const parts = window.location.pathname.split("/").filter(Boolean);
     return parts[parts.length - 1] || "default";
   };
   const id = getId();
